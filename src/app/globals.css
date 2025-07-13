@@ -1,0 +1,435 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+
+    /* Chart colors */
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+
+    /* Sidebar variables */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    
+  }
+
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 217.2 91.2% 59.8%;
+
+    /* Chart colors dark mode */
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+
+    /* Sidebar dark mode */
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  * {
+    border-color: theme('colors.slate.200');
+  }
+
+  .dark * {
+    border-color: theme('colors.slate.800');
+  }
+
+  body {
+    background-color: theme('colors.white');
+    color: theme('colors.slate.950');
+    font-feature-settings: "rlig", "calt";
+  }
+
+  .dark body {
+    background-color: theme('colors.slate.950');
+    color: theme('colors.slate.50');
+  }
+
+  
+}
+
+@layer components {
+  /* User Management Components */
+  .card {
+    transition: all 0.2s ease;
+  }
+
+  .card:hover {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+
+  .avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 1.125rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+
+  .role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.625rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .role-admin {
+    background-color: rgb(243 232 255);
+    color: rgb(107 33 168);
+    border: 1px solid rgb(196 181 253);
+  }
+
+  .role-editor {
+    background-color: rgb(219 234 254);
+    color: rgb(29 78 216);
+    border: 1px solid rgb(147 197 253);
+  }
+
+  .user-status-badge {
+    padding: 0.375rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .status-active {
+    background-color: rgb(220 252 231);
+    color: rgb(22 101 52);
+    border: 1px solid rgb(134 239 172);
+  }
+
+  .status-inactive {
+    background-color: rgb(254 226 226);
+    color: rgb(153 27 27);
+    border: 1px solid rgb(252 165 165);
+  }
+
+  .action-button {
+    height: 2.25rem;
+    width: 2.25rem;
+    padding: 0;
+  }
+
+  .action-button-edit:hover {
+    background-color: rgb(239 246 255);
+    border-color: rgb(147 197 253);
+  }
+
+  .action-button-delete:hover {
+    background-color: rgb(254 226 226);
+    border-color: rgb(252 165 165);
+    color: rgb(220 38 38);
+  }
+
+  /* Form Components */
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: hsl(var(--foreground));
+  }
+
+  .form-input {
+    height: 2.75rem;
+    width: 100%;
+  }
+
+  .form-select {
+    height: 2.75rem;
+  }
+
+  .form-switch-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: hsl(var(--muted));
+    border-radius: 0.5rem;
+    border: 1px solid hsl(var(--border));
+  }
+
+  .form-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  /* Loading Components */
+  .skeleton {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    background-color: hsl(var(--muted));
+    border-radius: 0.375rem;
+  }
+
+  /* Code Block Styling */
+  .code-block {
+    background-color: rgb(30 41 59);
+    color: rgb(226 232 240);
+    padding: 1rem;
+    border-radius: 0.375rem;
+    overflow-x: auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+}
+
+@layer utilities {
+  /* Animation keyframes */
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+
+  @keyframes caret-blink {
+    0%,
+    70%,
+    100% {
+      opacity: 1;
+    }
+    20%,
+    50% {
+      opacity: 0;
+    }
+  }
+
+  /* Animation classes */
+  .animate-accordion-down {
+    animation: accordion-down 0.2s ease-out;
+  }
+
+  .animate-accordion-up {
+    animation: accordion-up 0.2s ease-out;
+  }
+
+  .animate-caret-blink {
+    animation: caret-blink 1.25s ease-out infinite;
+  }
+
+  /* Dark mode variants */
+  .dark .user-role-admin {
+    background-color: rgb(88 28 135 / 0.2);
+    color: rgb(196 181 253);
+    border-color: rgb(88 28 135);
+  }
+
+  .dark .user-role-editor {
+    background-color: rgb(29 78 216 / 0.2);
+    color: rgb(147 197 253);
+    border-color: rgb(29 78 216);
+  }
+
+  .dark .user-status-active {
+    background-color: rgb(22 101 52 / 0.2);
+    color: rgb(134 239 172);
+    border-color: rgb(22 101 52);
+  }
+
+  .dark .user-status-inactive {
+    background-color: rgb(153 27 27 / 0.2);
+    color: rgb(252 165 165);
+    border-color: rgb(153 27 27);
+  }
+
+  .dark .action-button-edit:hover {
+    background-color: rgb(29 78 216 / 0.1);
+    border-color: rgb(59 130 246);
+  }
+
+  .dark .action-button-delete:hover {
+    background-color: rgb(153 27 27 / 0.1);
+    border-color: rgb(239 68 68);
+    color: rgb(248 113 113);
+  }
+
+  /* Radix UI Component Fixes */
+  [data-radix-popper-content-wrapper] {
+    z-index: 9999 !important;
+  }
+
+  /* Dropdown Menu styling */
+  [data-radix-dropdown-menu-content],
+  [data-radix-dropdown-menu-sub-content] {
+    background-color: hsl(var(--popover)) !important;
+    color: hsl(var(--popover-foreground)) !important;
+    border: 1px solid hsl(var(--border)) !important;
+    border-radius: calc(var(--radius) - 2px) !important;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+    overflow: hidden !important;
+    padding: 0.25rem !important;
+    min-width: 8rem !important;
+  }
+
+  [data-radix-dropdown-menu-item],
+  [data-radix-dropdown-menu-sub-trigger] {
+    position: relative !important;
+    display: flex !important;
+    cursor: default !important;
+    user-select: none !important;
+    align-items: center !important;
+    border-radius: calc(var(--radius) - 4px) !important;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.875rem !important;
+    outline: none !important;
+    color: hsl(var(--popover-foreground)) !important;
+    background-color: transparent !important;
+    transition: background-color 0.1s ease !important;
+  }
+
+  [data-radix-dropdown-menu-item]:focus,
+  [data-radix-dropdown-menu-item][data-highlighted],
+  [data-radix-dropdown-menu-sub-trigger]:focus,
+  [data-radix-dropdown-menu-sub-trigger][data-state="open"] {
+    background-color: hsl(var(--accent)) !important;
+    color: hsl(var(--accent-foreground)) !important;
+  }
+
+  [data-radix-dropdown-menu-item][data-disabled] {
+    pointer-events: none !important;
+    opacity: 0.5 !important;
+  }
+
+  [data-radix-dropdown-menu-label] {
+    padding: 0.375rem 0.5rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  [data-radix-dropdown-menu-separator] {
+    margin: 0.25rem -0.25rem !important;
+    height: 1px !important;
+    background-color: hsl(var(--muted)) !important;
+  }
+
+  /* Switch component styling */
+  .switch-root {
+    position: relative !important;
+    display: inline-flex !important;
+    height: 1.5rem !important;
+    width: 2.75rem !important;
+    flex-shrink: 0 !important;
+    cursor: pointer !important;
+    border-radius: 9999px !important;
+    border: 2px solid transparent !important;
+    transition: background-color 0.2s ease !important;
+    background-color: hsl(var(--input)) !important;
+  }
+
+  .switch-root:focus-visible {
+    outline: 2px solid hsl(var(--ring)) !important;
+    outline-offset: 2px !important;
+  }
+
+  .switch-root:disabled {
+    cursor: not-allowed !important;
+    opacity: 0.5 !important;
+  }
+
+  .switch-root[data-state="checked"] {
+    background-color: hsl(var(--primary)) !important;
+  }
+
+  .switch-thumb {
+    pointer-events: none !important;
+    display: block !important;
+    height: 1.25rem !important;
+    width: 1.25rem !important;
+    border-radius: 9999px !important;
+    background-color: hsl(var(--background)) !important;
+    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 0.2) !important;
+    transition: transform 0.2s ease !important;
+    transform: translateX(0) !important;
+  }
+
+  .switch-root[data-state="checked"] .switch-thumb {
+    transform: translateX(1.25rem) !important;
+  }
+}

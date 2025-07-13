@@ -1,0 +1,265 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  role      UserRole @default(EDITOR)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  articles  Article[]
+}
+
+enum UserRole {
+  ADMINISTRATOR
+  EDITOR
+}
+
+model Article {
+  id          String   @id @default(cuid())
+  title       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  imageUrl    String?
+  publishDate DateTime @default(now())
+  slug        String   @unique
+  categoryId  String?
+  category    Category? @relation(fields: [categoryId], references: [id])
+  sections    Section[]  // Changed from blocks to sections
+  
+  // SEO Fields
+  metaDescription String?
+  focusKeyword    String?
+  seoTitle        String?
+  seoScore        Int?     @default(0)
+  
+  // SEO Relations
+  keywords KeywordVariation[]
+  seoData  SEOData?
+}
+
+model Section {
+  id        String   @id @default(cuid())
+  title     String
+  order     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  articleId String
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  blocks    Block[]
+  
+  @@index([articleId])
+  @@index([order])
+}
+
+model Category {
+  id          String     @id @default(cuid())
+  name        String
+  slug        String     @unique
+  description String?
+  parentId    String?
+  parent      Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryHierarchy")
+  articles    Article[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  isActive    Boolean    @default(true)
+  sortOrder   Int        @default(0)
+}
+
+model KeywordVariation {
+  id           String  @id @default(cuid())
+  keyword      String
+  searchVolume Int?
+  difficulty   String? // Low, Medium, High, Unknown
+  intent       String? // Commercial, Informational, Navigational, Custom
+  isPrimary    Boolean @default(false)
+  articleId    String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  // Relations
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  
+  @@index([articleId])
+  @@index([keyword])
+}
+
+model SEOData {
+  id                 String   @id @default(cuid())
+  articleId          String   @unique
+  titleSuggestions   String[] 
+  contentSuggestions Json?    
+  readabilityScore   Int?     @default(0)
+  keywordDensity     Float?   @default(0.0)
+  wordCount          Int?     @default(0)
+  readingTime        Int?     @default(0)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  
+  // Relations
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+}
+
+model Block {
+  id                      String           @id @default(cuid())
+  type                    String
+  content                 String?
+  level                   Int?
+  listType                String?
+  imageUrl                String?
+  imageCaption            String?
+  imageAlt                String?
+  language                String?
+  ctaText                 String?
+  ctaLink                 String?
+  productName             String?
+  overallRating           Float?
+  ingredientsIntroduction String?
+  howToUse                String?
+  price                   String?
+  verdict                 String?
+  author                  String?
+  reviewDate              String?
+  medicallyReviewed       Boolean?
+  factChecked             Boolean?
+  ctaButtonText           String?
+  ctaButtonLink           String?
+  backgroundColor         String?
+  order                   Int
+  sectionId               String           // Changed from articleId to sectionId
+  section                 Section          @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  cons                    Cons[]
+  customFields            CustomField[]
+  highlights              Highlight[]
+  ingredients             Ingredient[]
+  ingredientsList         IngredientItem[]
+  pros                    Pros[]
+  bulletPoints            BulletPoint[]
+  faqItems                FAQItem[]
+  specifications          Specification[]
+  ratings                 Rating?
+  
+  @@index([sectionId])
+  @@index([type])
+  @@index([order])
+}
+
+model Rating {
+  id            String @id @default(cuid())
+  ingredients   Float?
+  value         Float?
+  manufacturer  Float?
+  safety        Float?
+  effectiveness Float?
+  blockId       String @unique
+  block         Block  @relation(fields: [blockId], references: [id], onDelete: Cascade)
+}
+
+model Pros {
+  id      String @id @default(cuid())
+  content String
+  order   Int
+  blockId String
+  block   Block  @relation(fields: [blockId], references: [id], onDelete: Cascade)
+  
+  @@index([blockId])
+}
+
+model Cons {
+  id      String @id @default(cuid())
+  content String
+  order   Int
+  blockId String
+  block   Block  @relation(fields: [blockId], references: [id], onDelete: Cascade)
+  
+  @@index([blockId])
+}
+
+model Ingredient {
+  id      String @id @default(cuid())
+  content String
+  order   Int
+  blockId String
+  block   Block  @relation(fields: [blockId], references: [id], onDelete: Cascade)
+  
+  @@index([blockId])
+}
+
+model Highlight {
+  id      String @id @default(cuid())
+  content String
+  order   Int
+  blockId String
+  block   Block  @relation(fields: [blockId], references: [id], onDelete: Cascade)
+  
+  @@index([blockId])
+}
+
+model BulletPoint {
+  id      String @id @default(cuid())
+  content String
+  order   Int
+  blockId String
+  block   Block  @relation(fields: [blockId], references: [id], onDelete: Cascade)
+  
+  @@index([blockId])
+}
+
+model FAQItem {
+  id       String @id @default(cuid())
+  question String
+  answer   String
+  order    Int
+  blockId  String
+  block    Block  @relation(fields: [blockId], references: [id], onDelete: Cascade)
+  
+  @@index([blockId])
+}
+
+model Specification {
+  id      String @id @default(cuid())
+  name    String
+  value   String
+  order   Int
+  blockId String
+  block   Block  @relation(fields: [blockId], references: [id], onDelete: Cascade)
+  
+  @@index([blockId])
+}
+
+model CustomField {
+  id      String @id @default(cuid())
+  name    String
+  value   String
+  blockId String
+  block   Block  @relation(fields: [blockId], references: [id], onDelete: Cascade)
+  
+  @@index([blockId])
+  @@index([name])
+}
+
+model IngredientItem {
+  id               String  @id @default(cuid())
+  number           Int
+  name             String
+  imageUrl         String
+  description      String
+  studyYear        String?
+  studySource      String?
+  studyDescription String?
+  blockId          String
+  block            Block   @relation(fields: [blockId], references: [id], onDelete: Cascade)
+  
+  @@index([blockId])
+}
