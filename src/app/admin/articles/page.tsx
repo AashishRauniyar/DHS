@@ -77,8 +77,8 @@ export default function ArticlesPage() {
       const params = new URLSearchParams({
         page: currentPage.toString(),
         ...(searchTerm && { search: searchTerm }),
-        ...(selectedCategory && { category: selectedCategory }),
-        ...(selectedUser && { userId: selectedUser }),
+        ...(selectedCategory && selectedCategory !== "all" && { category: selectedCategory }),
+        ...(selectedUser && selectedUser !== "all" && { userId: selectedUser }),
       })
 
       const response = await fetch(`/api/articles?${params}`)
@@ -203,8 +203,8 @@ export default function ArticlesPage() {
 
   const clearFilters = () => {
     setSearchTerm("")
-    setSelectedCategory("")
-    setSelectedUser("")
+    setSelectedCategory("all")
+    setSelectedUser("all")
     setCurrentPage(1)
   }
 
@@ -253,7 +253,7 @@ export default function ArticlesPage() {
 
               <div className="space-y-2">
                 <label className="text-sm font-medium">Category</label>
-                <Select value={selectedCategory || ""} onValueChange={setSelectedCategory}>
+                <Select value={selectedCategory || "all"} onValueChange={setSelectedCategory}>
                   <SelectTrigger>
                     <SelectValue placeholder="All Categories" />
                   </SelectTrigger>
@@ -270,7 +270,7 @@ export default function ArticlesPage() {
 
               <div className="space-y-2">
                 <label className="text-sm font-medium">Author</label>
-                <Select value={selectedUser || ""} onValueChange={setSelectedUser}>
+                <Select value={selectedUser || "all"} onValueChange={setSelectedUser}>
                   <SelectTrigger>
                     <SelectValue placeholder="All Users" />
                   </SelectTrigger>

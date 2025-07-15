@@ -93,6 +93,16 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               </p>
             )}
             <Link
+              href="/"
+              className={cn(
+                "flex items-center py-2 text-gray-700 dark:text-gray-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700",
+                isSidebarOpen ? "px-3" : "px-2 justify-center",
+              )}
+            >
+              <Home className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+              {isSidebarOpen && <span className="ml-3">Site Home</span>}
+            </Link>
+            <Link
               href="/admin"
               className={cn(
                 "flex items-center py-2 text-gray-700 dark:text-gray-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700",
@@ -245,6 +255,14 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             <p className="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 font-semibold mb-2">
               Dashboard
             </p>
+            <Link
+              href="/"
+              className="flex items-center px-3 py-2 text-gray-700 dark:text-gray-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <Home className="h-5 w-5 mr-3 text-gray-500 dark:text-gray-400" />
+              Site Home
+            </Link>
             <Link
               href="/admin"
               className={cn(
